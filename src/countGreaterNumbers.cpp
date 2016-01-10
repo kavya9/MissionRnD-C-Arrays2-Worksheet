@@ -13,7 +13,7 @@ ERROR CASES: Return NULL for invalid inputs.
 
 NOTES:
 */
-#include<stdio.h>
+
 struct transaction {
 	int amount;
 	char date[11];

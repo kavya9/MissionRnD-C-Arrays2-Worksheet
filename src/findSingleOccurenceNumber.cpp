@@ -14,5 +14,5 @@ NOTES:
 */
 
 int findSingleOccurenceNumber(int *A, int len) {
-	return -1;
+	if(A=='\0' || len<=0) return -1;
 }
