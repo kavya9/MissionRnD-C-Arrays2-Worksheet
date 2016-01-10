@@ -19,6 +19,19 @@ struct transaction {
 	char date[11];
 	char description[20];
 };
+int leap1(int y)
+{
+	if (y % 4 == 0)
+	{
+		if (y % 100 != 0)return 1;
+		else if (y % 100 == 0)
+		{
+			if (y % 400 == 0)return 1;
+			else return 0;
+		}
+	}
+	else return 0;
+}
 int * validate(char *date)
 {
 	int i,dateNum[11];
@@ -37,6 +50,18 @@ int * validate(char *date)
 	return dateNum;
 }
 
+int dateValidate(int day, int mon, int year)
+{
+int flag = 0;
+if (mon<1 || mon>12)flag++;
+if ((mon == 1 || mon == 3 || mon == 5 || mon == 7 || mon == 8 || mon == 10 || mon == 12) && day>31)flag++;
+else if (mon == 2 && !(leap1(year)) && day>28)flag++;
+else if (mon == 2 && leap1(year) && day>29)flag++;
+else if ((mon == 4 || mon == 6 || mon == 9 || mon == 11) && day>30)flag++;
+if (flag)return 0;
+else return 1;
+
+}
 int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
 	if (Arr=='\0' || len<=0 || date=='\0' )return '\0';
 	int i, j, day[2] = { 0, 0 }, month[2] = { 0, 0 }, year[2] = { 0, 0 }, transactions = 0 ,ans,*dateNum;
@@ -47,6 +72,7 @@ int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
 		day[0] = dateNum[0] * 10 + dateNum[1];
 		month[0] = dateNum[3] * 10 + dateNum[4];
 		year[0] = dateNum[6] * 1000 + dateNum[7] * 100 + dateNum[8] * 10 + dateNum[9];
+		if (!dateValidate(day[0], month[0], year[0])) return '\0';
 		for (i = 0; i < len; i++)
 		{
 			day[1] = 0, month[1] = 0, year[1] = 0;
@@ -56,6 +82,7 @@ int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
 				day[1] = dateNum[0] * 10 + dateNum[1];
 				month[1] = dateNum[3] * 10 + dateNum[4];
 				year[1] = dateNum[6] * 1000 + dateNum[7] * 100 + dateNum[8] * 10 + dateNum[9];
+				if (!dateValidate(day[1], month[1], year[1])) return '\0';
 				if (year[0] < year[1]) transactions++;
 				else if (year[0] == year[1])
 				{
@@ -72,4 +99,5 @@ int countGreaterNumbers(struct transaction *Arr, int len, char *date) {
 	}
 	return '\0';
 }
+
 
