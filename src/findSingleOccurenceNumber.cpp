@@ -14,5 +14,17 @@ NOTES:
 */
 
 int findSingleOccurenceNumber(int *A, int len) {
-	if(A=='\0' || len<=0) return -1;
+	if (A == '\0' || len <= 0) return -1;
+	int i,element,once=0,twice=0,notThrice;
+	for (i = 0; i < len; i++)
+	{
+		element = A[i];
+		twice |= once & element;
+		once ^= element;
+		notThrice = ~(once & twice);
+		once &= notThrice;
+		twice &= notThrice;
+	}
+	return once;
 }
+	
